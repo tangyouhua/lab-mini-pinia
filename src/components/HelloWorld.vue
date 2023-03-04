@@ -1,11 +1,38 @@
 <script setup>
 // import { ref } from 'vue'
 
-import { useCounterStore } from '../../store/counter';
+import { computed, reactive, toRefs } from 'vue';
 
-// defineProps({
-//   msg: String,
-// })
+// import { useCounterStore } from '../../store/counter';
+
+function useCounterStore() {
+  const state = reactive({
+    count: 0
+  })
+
+  const store = reactive({
+    ...toRefs(state),
+    doubleCounter: computed(() => state.count * 2),
+    inc() {
+      state.count++
+    },
+    $patch(partialStateOrMutator) {
+      if (typeof partialStateOrMutator === 'object') {
+        Object.keys(partialStateOrMutator).forEach(key => {
+          state[key] = partialStateOrMutator[key]
+        })
+      } else {
+        // function 
+        partialStateOrMutator(state)
+      }
+    }
+  })
+  return store
+}
+
+defineProps({
+  msg: String,
+})
 
 // const count = ref(0)
 
