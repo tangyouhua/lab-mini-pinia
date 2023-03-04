@@ -1,6 +1,6 @@
 import { defineStore } from "../src/mypinia/store";
 
-export const useCounterStore = defineStore({
+export const useCounterStore = defineStore("counter", {
   state() {
     return {
       count: 1,
